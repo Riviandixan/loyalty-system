@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum MemberTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  fullName  String   @map("full_name")
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+model Member {
+  id           Int          @id @default(autoincrement())
+  memberCode   String       @unique @map("member_code")
+  fullName     String       @map("full_name")
+  email        String       @unique
+  phone        String
+  dateOfBirth  DateTime?    @map("date_of_birth")
+  pointBalance      Int          @default(0) @map("point_balance")
+  totalPointsEarned Int          @default(0) @map("total_points_earned")
+  tier              MemberTier   @default(BRONZE)
+  status       MemberStatus @default(ACTIVE)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  transactions Transaction[]
+  redeems      Redeem[]
+
+  @@map("members")
+}
+
+model Transaction {
+  id                String   @id @default(uuid())
+  transactionNumber String   @unique @map("transaction_number")
+  memberId          Int      @map("member_id")
+  totalAmount       Int      @map("total_amount")
+  earnedPoints      Int      @map("earned_points")
+  transactionDate   DateTime @default(now()) @map("transaction_date")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@map("transactions")
+}
+
+model Reward {
+  id            Int    @id @default(autoincrement())
+  name          String
+  requiredPoint Int    @map("required_point")
+  description   String?
+  isActive      Boolean @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  redeems Redeem[]
+
+  @@map("rewards")
+}
+
+model Redeem {
+  id         String   @id @default(uuid())
+  memberId   Int      @map("member_id")
+  rewardId   Int      @map("reward_id")
+  pointsUsed Int      @map("points_used")
+  redeemedAt DateTime @default(now()) @map("redeemed_at")
+
+  member Member @relation(fields: [memberId], references: [id])
+  reward Reward @relation(fields: [rewardId], references: [id])
+
+  @@map("redeems")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  detail    String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}

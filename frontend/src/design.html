@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>LoyaltyOS - Dashboard Juragan</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f6",
+                        "on-secondary-container": "#006f69",
+                        "primary-container": "#ff7f50",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#2f1500",
+                        "outline": "#8b7169",
+                        "on-tertiary-container": "#5b2f00",
+                        "primary": "#a43c12",
+                        "on-secondary-fixed-variant": "#00504c",
+                        "secondary": "#006a65",
+                        "primary-fixed-dim": "#ffb59c",
+                        "primary-fixed": "#ffdbcf",
+                        "surface-container-highest": "#f4ded7",
+                        "on-background": "#241915",
+                        "on-secondary-fixed": "#00201e",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#ffb59c",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#6c2000",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#df9350",
+                        "on-surface-variant": "#57423b",
+                        "on-primary-fixed-variant": "#822800",
+                        "inverse-surface": "#3a2e29",
+                        "tertiary": "#8d4f11",
+                        "tertiary-fixed": "#ffdcc3",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#76f3ea",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface-container-high": "#fae4dd",
+                        "surface-dim": "#ebd6cf",
+                        "surface-bright": "#fff8f6",
+                        "on-primary-fixed": "#380c00",
+                        "surface-tint": "#a43c12",
+                        "surface": "#fff8f6",
+                        "on-surface": "#241915",
+                        "inverse-on-surface": "#ffede8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ffe9e3",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#dec0b6",
+                        "surface-container-low": "#fff1ec",
+                        "secondary-fixed": "#79f6ed",
+                        "surface-variant": "#f4ded7",
+                        "secondary-fixed-dim": "#59dad1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-margin": "48px",
+                        "base": "8px",
+                        "card-gap": "24px",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bento-shadow {
+            box-shadow: 0 20px 40px rgba(74, 69, 67, 0.08);
+        }
+
+        .squishy-active:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fff8f6;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="text-on-background min-h-screen pb-32 lg:pb-0 lg:pl-72">
+    <!-- Desktop Navigation Drawer -->
+    <aside
+        class="hidden lg:flex flex-col w-72 h-screen fixed left-0 top-0 py-container-padding bg-surface-container-low border-r border-outline-variant/20">
+        <div class="px-8 mb-10">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">LoyaltyOS</h1>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a class="bg-primary-container text-on-primary-container font-bold rounded-full mx-2 px-4 py-3 flex items-center gap-3 transition-all"
+                href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-label-md text-label-md">Dashboard</span>
+            </a>
+            <a class="text-on-surface-variant rounded-full mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all"
+                href="#">
+                <span class="material-symbols-outlined">group</span>
+                <span class="font-label-md text-label-md">Members</span>
+            </a>
+            <a class="text-on-surface-variant rounded-full mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all"
+                href="#">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span class="font-label-md text-label-md">Transaksi</span>
+            </a>
+            <a class="text-on-surface-variant rounded-full mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all"
+                href="#">
+                <span class="material-symbols-outlined">card_giftcard</span>
+                <span class="font-label-md text-label-md">Redeem</span>
+            </a>
+            <div class="pt-10 px-6 pb-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-outline">System</span>
+            </div>
+            <a class="text-on-surface-variant rounded-full mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all"
+                href="#">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                <span class="font-label-md text-label-md">Users</span>
+            </a>
+            <a class="text-on-surface-variant rounded-full mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all"
+                href="#">
+                <span class="material-symbols-outlined">history_edu</span>
+                <span class="font-label-md text-label-md">Audit Logs</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-4 pb-4">
+            <div class="bg-surface-container-high rounded-3xl p-4 flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">
+                    SA</div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm font-bold truncate">Superr Adminn</p>
+                    <p class="text-xs text-on-surface-variant truncate">Retail Manager</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- Top App Bar (Mobile & Header) -->
+    <header class="w-full top-0 sticky z-40 bg-background/80 backdrop-blur-md">
+        <div class="flex items-center justify-between px-gutter py-container-padding w-full max-w-7xl mx-auto">
+            <div class="flex flex-col">
+                <h2
+                    class="font-headline-md text-headline-md mobile:font-headline-lg-mobile mobile:text-headline-lg-mobile text-primary leading-tight">
+                    Met siang Superr! Toko lagi rame terus nih? 🔥
+                </h2>
+                <p class="text-on-surface-variant text-body-md mt-1">Ini ringkasan loyalty program kamu hari ini.</p>
+            </div>
+            <div class="hidden md:flex gap-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high">
+                    <img alt="Avatar" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu1I8CBhSkVj5fNGRXXEt7tNL3tzKxrsJ7znOPx2s_hrvYCi0sxt5kf_F-DHEZ36S7mkfA4889iGCh8Bx-TyrnXrm3sOyayv4TN3aj7SdQapFMIOrudqcf6rYO6tOGn7vEo3NKcs5Ms6wbmGNOQe87a7sJnTWlRG7Kgg3rsgUzSSxnE9s174IaK5hpnY6hlxC4RtxjXgNFzz0pWRiJqdbnY2VA2VXoZ-gWYvZH0JU3I2TjEKl67PDpDLRpPD_u6nEqA066Z3fN2lk" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-gutter py-4 space-y-8">
+        <!-- Stats Grid: 4 Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-card-gap">
+            <!-- Card 1: Total Member -->
+            <div
+                class="bg-surface-container-lowest bento-shadow rounded-xl p-container-padding flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 group squishy-active cursor-pointer">
+                <div class="flex justify-between items-start">
+                    <span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Total
+                        Member</span>
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-primary-container/20 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined">group</span>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <span class="font-display-lg text-display-lg text-primary">6</span>
+                </div>
+            </div>
+            <!-- Card 2: Member Aktif -->
+            <div
+                class="bg-surface-container-lowest bento-shadow rounded-xl p-container-padding flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 group squishy-active cursor-pointer">
+                <div class="flex justify-between items-start">
+                    <span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Member
+                        Aktif</span>
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-secondary-container/30 text-on-secondary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined">person_check</span>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <span class="font-display-lg text-display-lg text-secondary">5</span>
+                </div>
+            </div>
+            <!-- Card 3: Poin Diterbitkan -->
+            <div
+                class="bg-surface-container-lowest bento-shadow rounded-xl p-container-padding flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 group squishy-active cursor-pointer">
+                <div class="flex justify-between items-start">
+                    <span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Poin
+                        Diterbitkan</span>
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-tertiary-container/30 text-tertiary flex items-center justify-center">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <span class="font-display-lg text-display-lg text-tertiary">30</span>
+                </div>
+            </div>
+            <!-- Card 4: Poin Ditukarkan -->
+            <div
+                class="bg-surface-container-lowest bento-shadow rounded-xl p-container-padding flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 group squishy-active cursor-pointer">
+                <div class="flex justify-between items-start">
+                    <span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Poin
+                        Ditukarkan</span>
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-error-container/30 text-error flex items-center justify-center">
+                        <span class="material-symbols-outlined">redeem</span>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <span class="font-display-lg text-display-lg text-error">250</span>
+                </div>
+            </div>
+        </section>
+        <!-- Revenue & Progress Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+            <!-- Monthly Chart -->
+            <div
+                class="lg:col-span-2 bg-surface-container-lowest bento-shadow rounded-xl p-container-padding hover:-translate-y-1 transition-transform duration-300">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="font-headline-sm text-headline-sm">Revenue &amp; Transaksi Bulanan</h3>
+                        <p class="text-on-surface-variant text-sm">Data 6 bulan terakhir</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-primary"></div>
+                            <span class="text-xs font-bold text-on-surface-variant">Revenue</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-secondary"></div>
+                            <span class="text-xs font-bold text-on-surface-variant">Transaksi</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mock Chart Visualization -->
+                <div class="h-64 w-full flex items-end justify-around gap-4 pb-4">
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full">
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-4 bg-primary/20 rounded-full h-1/4"></div>
+                            <div class="w-4 bg-secondary/20 rounded-full h-1/5"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-bold text-outline">Jan</span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full">
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-4 bg-primary/20 rounded-full h-1/2"></div>
+                            <div class="w-4 bg-secondary/20 rounded-full h-1/3"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-bold text-outline">Feb</span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full">
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-4 bg-primary/20 rounded-full h-2/3"></div>
+                            <div class="w-4 bg-secondary/20 rounded-full h-1/2"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-bold text-outline">Mar</span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full">
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-4 bg-primary/20 rounded-full h-3/4"></div>
+                            <div class="w-4 bg-secondary/20 rounded-full h-2/3"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-bold text-outline">Apr</span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full">
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-4 bg-primary/20 rounded-full h-5/6"></div>
+                            <div class="w-4 bg-secondary/20 rounded-full h-3/4"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-bold text-outline">Mei</span>
+                    </div>
+                    <!-- Current Month Active -->
+                    <div class="flex-1 flex flex-col justify-end gap-2 h-full relative">
+                        <div
+                            class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-background text-white text-[10px] px-2 py-1 rounded-lg">
+                            Rp 300k</div>
+                        <div class="flex justify-center gap-1 h-full items-end">
+                            <div class="w-6 bg-primary rounded-full h-full shadow-lg shadow-primary/30"></div>
+                            <div class="w-6 bg-secondary rounded-full h-4/5 shadow-lg shadow-secondary/30"></div>
+                        </div>
+                        <span class="text-center text-[10px] font-extrabold text-primary">Jun</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Revenue Progress Card -->
+            <div
+                class="bg-surface-container-lowest bento-shadow rounded-xl p-container-padding flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
+                <div>
+                    <h3 class="font-headline-sm text-headline-sm mb-1">Total Revenue</h3>
+                    <p class="text-display-lg text-primary font-display-lg leading-none mb-6">Rp 300.000</p>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end">
+                                <span class="text-sm font-bold text-on-surface-variant">Pencapaian Target</span>
+                                <span class="text-xl font-extrabold text-primary">78%</span>
+                            </div>
+                            <div class="w-full h-4 bg-primary-fixed rounded-full overflow-hidden">
+                                <div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
+                                    style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-primary-container/10 p-4 rounded-2xl flex items-center gap-3">
+                            <span class="text-2xl">🚀</span>
+                            <p class="text-on-primary-fixed-variant text-sm font-bold">Dikit lagi 80%, yuk gas pol
+                                terus!</p>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="w-full mt-8 bg-secondary text-on-secondary py-4 rounded-full font-bold shadow-lg shadow-secondary/20 squishy-active hover:bg-on-secondary-fixed-variant transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">analytics</span>
+                    Lihat Laporan Detail
+                </button>
+            </div>
+        </section>
+        <!-- Banner / CTA Section -->
+        <section
+            class="bg-gradient-to-r from-primary to-primary-container rounded-xl p-container-padding bento-shadow relative overflow-hidden group hover:-translate-y-1 transition-all">
+            <div class="relative z-10 text-white max-w-lg">
+                <h3 class="font-headline-md text-headline-md mb-2">Ingin tambah Member baru? 🤝</h3>
+                <p class="font-body-md text-white/90 mb-6">Buat promo khusus member baru hari ini dan tingkatkan
+                    loyalitas pelangganmu sekarang juga!</p>
+                <button class="bg-white text-primary px-8 py-3 rounded-full font-bold squishy-active">
+                    Buat Promo Sekarang
+                </button>
+            </div>
+            <!-- Decorative circle -->
+            <div
+                class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform">
+            </div>
+            <div
+                class="absolute right-10 top-1/2 -translate-y-1/2 opacity-20 transform scale-[2.5] select-none pointer-events-none">
+                <span class="material-symbols-outlined text-[100px] text-white">loyalty</span>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Nav Bar (Mobile Only) -->
+    <nav
+        class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface shadow-[0_-8px_24px_rgba(74,69,67,0.08)] z-50 rounded-t-lg">
+        <a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl p-2 scale-110 transition-transform squishy-active"
+            href="#">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+            <span class="font-label-md text-[10px] mt-1">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 squishy-active" href="#">
+            <span class="material-symbols-outlined">group</span>
+            <span class="font-label-md text-[10px] mt-1">Member</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 squishy-active" href="#">
+            <div
+                class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white -mt-10 shadow-lg border-4 border-background">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+            <span class="font-label-md text-[10px] mt-1">Bayar</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 squishy-active" href="#">
+            <span class="material-symbols-outlined">redeem</span>
+            <span class="font-label-md text-[10px] mt-1">Hadiah</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 squishy-active" href="#">
+            <span class="material-symbols-outlined">menu</span>
+            <span class="font-label-md text-[10px] mt-1">Menu</span>
+        </a>
+    </nav>
+    <script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('.squishy-active').forEach(el => {
+            el.addEventListener('touchstart', function () {
+                this.classList.add('scale-95');
+            });
+            el.addEventListener('touchend', function () {
+                this.classList.remove('scale-95');
+            });
+        });
+
+        // Simple animation on load for cards
+        window.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.bento-shadow');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+
+</html>
