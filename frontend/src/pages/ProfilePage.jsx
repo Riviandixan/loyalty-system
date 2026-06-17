@@ -153,11 +153,13 @@ export default function ProfilePage() {
                     <h2 className="text-base font-semibold text-slate-900">{profile?.fullName}</h2>
                     <p className="text-sm text-slate-500">{profile?.email}</p>
                     <div className="flex items-center gap-3 mt-2">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium ${profile?.role === 'ADMIN'
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium leading-none ${profile?.role === 'ADMIN'
                             ? 'bg-blue-50 text-blue-700'
                             : 'bg-slate-100 text-slate-600'
                             }`}>
-                            <MaterialIcon name={profile?.role === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="w-4 h-4" />
+                            <span className="flex items-center justify-center w-3.5 h-3.5 flex-shrink-0">
+                                <MaterialIcon name={profile?.role === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="text-[13px] leading-none" />
+                            </span>
                             {profile?.role === 'ADMIN' ? 'Administrator' : 'Staff'}
                         </span>
                         <span className="text-xs text-slate-400">
@@ -192,7 +194,9 @@ export default function ProfilePage() {
                             }`}
                     >
                         <span className="inline-flex items-center gap-1.5">
-                            <MaterialIcon name={tab.icon} className="w-4 h-4" />
+                            <span className="flex items-center justify-center text-[14px] flex-shrink-0">
+                                <MaterialIcon name={tab.icon} className="w-full h-full" />
+                            </span>
                             {tab.label}
                         </span>
                     </button>
@@ -239,7 +243,9 @@ export default function ProfilePage() {
                             <label className="block text-xs font-medium text-slate-700 mb-1.5">Role</label>
                             <div className="input-field bg-slate-50 text-slate-500 cursor-not-allowed">
                                 <span className="inline-flex items-center gap-1.5">
-                                    <MaterialIcon name={profile?.role === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="w-4 h-4" />
+                                    <span className="flex items-center justify-center w-4 h-4 flex-shrink-0">
+                                        <MaterialIcon name={profile?.role === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="w-full h-full" />
+                                    </span>
                                     {profile?.role === 'ADMIN' ? 'Administrator' : 'Staff'}
                                 </span>
                             </div>

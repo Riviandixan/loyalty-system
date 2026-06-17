@@ -64,7 +64,9 @@ export default function AppLayout() {
                                 }`
                             }
                         >
-                            <Icon name={item.icon} className="w-5 h-5" />
+                            <span className="flex items-center justify-center w-5 h-5 flex-shrink-0">
+                                <Icon name={item.icon} className="w-full h-full" />
+                            </span>
                             {item.label}
                         </NavLink>
                     ))}
@@ -83,7 +85,9 @@ export default function AppLayout() {
                                         }`
                                     }
                                 >
-                                    <Icon name={item.icon} className="w-5 h-5" />
+                                    <span className="flex items-center justify-center w-5 h-5 flex-shrink-0">
+                                        <Icon name={item.icon} className="w-full h-full" />
+                                    </span>
                                     {item.label}
                                 </NavLink>
                             ))}

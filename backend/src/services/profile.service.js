@@ -33,7 +33,7 @@ const updateProfile = async (userId, { fullName, email }) => {
     const user = await prisma.user.update({
         where: { id: userId },
         data: { fullName, email },
-        select: {  id: true, fullName: true, email: true, role: true, createdAt: true },
+        select: { id: true, fullName: true, email: true, role: true, createdAt: true },
     });
 
     await createAuditLog({

@@ -6,14 +6,18 @@ import { MaterialIcon, Spinner, EmptyState, Modal, Alert } from '../../component
 const RoleBadge = ({ role }) => {
     if (role === 'ADMIN')
         return (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
-                <MaterialIcon name="admin_panel_settings" className="w-4 h-4" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium leading-none bg-blue-50 text-blue-700">
+                <span className="flex items-center justify-center w-3.5 h-3.5 flex-shrink-0">
+                    <MaterialIcon name="admin_panel_settings" className="text-[13px] leading-none" />
+                </span>
                 Admin
             </span>
         );
     return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
-            <MaterialIcon name="person" className="w-4 h-4" />
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium leading-none bg-slate-100 text-slate-600">
+            <span className="flex items-center justify-center w-3.5 h-3.5 flex-shrink-0">
+                <MaterialIcon name="person" className="text-[13px] leading-none" />
+            </span>
             Staff
         </span>
     );
@@ -300,7 +304,9 @@ export default function UserListPage() {
                                     />
                                     <span className="text-sm text-slate-700">
                                         <span className="inline-flex items-center gap-1.5">
-                                            <MaterialIcon name={r === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="w-4 h-4" />
+                                            <span className="flex items-center justify-center w-4 h-4 flex-shrink-0">
+                                                <MaterialIcon name={r === 'ADMIN' ? 'admin_panel_settings' : 'person'} className="text-[14px]" />
+                                            </span>
                                             {r === 'ADMIN' ? 'Admin' : 'Staff'}
                                         </span>
                                     </span>

@@ -51,7 +51,7 @@ export default function App() {
           <Route path="redeems/create" element={<RedeemCreatePage />} />
           <Route path="users" element={<AdminRoute><UserListPage /></AdminRoute>} />
           <Route path="audit-logs" element={<AdminRoute><AuditLogPage /></AdminRoute>} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile" element={<AdminRoute><ProfilePage /></AdminRoute>} />
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

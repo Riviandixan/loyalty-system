@@ -19,7 +19,7 @@ const ActionBadge = ({ action }) => {
     const cfg = actionConfig[action] || { label: action, color: 'bg-slate-100 text-slate-600', icon: 'description' };
     return (
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium ${cfg.color}`}>
-            <MaterialIcon name={cfg.icon} className="w-4 h-4" />
+            <MaterialIcon name={cfg.icon} className="text-[14px]" />
             {cfg.label}
         </span>
     );

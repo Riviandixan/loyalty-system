@@ -105,7 +105,7 @@ export const StatCard = ({ label, value, icon, trend, trendLabel, color = 'blue'
     };
     return (
         <div className="card p-5 transition-transform duration-300 hover:-translate-y-1">
-            <div className="flex items-start justify-between gap-4 mb-5">
+            <div className="flex items-center justify-between gap-4 mb-5">
                 <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-[0.18em]">{label}</span>
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm ${colors[color]}`}>{icon}</div>
             </div>
