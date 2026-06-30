@@ -1,20 +1,74 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { MaterialIcon } from '../components/ui';
 import screenImage from '../assets/screen.png';
 
 export default function RegisterPage() {
+    const [step, setStep] = useState('register'); // 'register' | 'otp'
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { register, loading, error } = useAuth();
+    const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const [countdown, setCountdown] = useState(0);
+    const inputRefs = useRef([]);
+    const { register, verifyOtp, resendOtp, loading, error } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    useEffect(() => {
+        if (countdown <= 0) return;
+        const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+        return () => clearTimeout(t);
+    }, [countdown]);
+
+    const handleRegister = async (e) => {
         e.preventDefault();
         const result = await register({ fullName, email, password });
-        if (result.success) navigate('/login', { state: { successMessage: 'Register berhasil. Silakan login dengan akun baru Anda.' } });
+        if (result.success) {
+            setStep('otp');
+            setCountdown(60);
+            setTimeout(() => inputRefs.current[0]?.focus(), 100);
+        }
+    };
+
+    const handleOtpChange = (index, value) => {
+        if (!/^\d*$/.test(value)) return;
+        const next = [...otp];
+        next[index] = value.slice(-1);
+        setOtp(next);
+        if (value && index < 5) inputRefs.current[index + 1]?.focus();
+    };
+
+    const handleOtpKeyDown = (index, e) => {
+        if (e.key === 'Backspace' && !otp[index] && index > 0) {
+            inputRefs.current[index - 1]?.focus();
+        }
+    };
+
+    const handleOtpPaste = (e) => {
+        const paste = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        if (paste.length === 6) {
+            setOtp(paste.split(''));
+            inputRefs.current[5]?.focus();
+        }
+    };
+
+    const handleVerify = async (e) => {
+        e.preventDefault();
+        const code = otp.join('');
+        if (code.length < 6) return;
+        const result = await verifyOtp({ email, otp: code });
+        if (result.success) navigate('/login', { state: { successMessage: 'Akun berhasil dibuat. Silakan login.' } });
+    };
+
+    const handleResend = async () => {
+        if (countdown > 0) return;
+        const result = await resendOtp({ email });
+        if (result.success) {
+            setOtp(['', '', '', '', '', '']);
+            setCountdown(60);
+            inputRefs.current[0]?.focus();
+        }
     };
 
     return (
@@ -81,10 +135,12 @@ export default function RegisterPage() {
                         <div className="space-y-5 sm:space-y-6">
                             <div>
                                 <h2 className="text-[clamp(1.7rem,3.2vw,2.6rem)] font-semibold tracking-[-0.04em] text-slate-900">
-                                    Daftar Akun
+                                    {step === 'register' ? 'Daftar Akun' : 'Verifikasi Email'}
                                 </h2>
                                 <p className="mt-3 max-w-xl text-[14px] leading-7 text-slate-500 sm:text-[15px]">
-                                    Isi nama, email, dan password untuk membuat akun baru.
+                                    {step === 'register'
+                                        ? 'Isi nama, email, dan password untuk membuat akun baru.'
+                                        : <>Kode OTP telah dikirim ke <span className="font-medium text-slate-700">{email}</span>. Masukkan kode 6 digit di bawah ini.</>}
                                 </p>
                             </div>
 
@@ -95,58 +151,104 @@ export default function RegisterPage() {
                                 </div>
                             )}
 
-                            <form onSubmit={handleSubmit} className="space-y-4 pt-1 sm:space-y-5">
-                                <div>
-                                    <label className="mb-2 block text-[14px] font-medium text-slate-700">Nama Lengkap</label>
-                                    <input
-                                        type="text"
-                                        value={fullName}
-                                        onChange={(e) => setFullName(e.target.value)}
-                                        className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
-                                        placeholder="Masukkan nama lengkap"
-                                        required
-                                    />
-                                </div>
+                            {step === 'register' ? (
+                                <form onSubmit={handleRegister} className="space-y-4 pt-1 sm:space-y-5">
+                                    <div>
+                                        <label className="mb-2 block text-[14px] font-medium text-slate-700">Nama Lengkap</label>
+                                        <input
+                                            type="text"
+                                            value={fullName}
+                                            onChange={(e) => setFullName(e.target.value)}
+                                            className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
+                                            placeholder="Masukkan nama lengkap"
+                                            required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="mb-2 block text-[14px] font-medium text-slate-700">Email Anda</label>
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
-                                        placeholder="Masukkan email Anda"
-                                        required
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="mb-2 block text-[14px] font-medium text-slate-700">Email Anda</label>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
+                                            placeholder="Masukkan email Anda"
+                                            required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="mb-2 block text-[14px] font-medium text-slate-700">Password</label>
-                                    <input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
-                                        placeholder="••••••••"
-                                        required
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="mb-2 block text-[14px] font-medium text-slate-700">Password</label>
+                                        <input
+                                            type="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
+                                            placeholder="••••••••"
+                                            required
+                                        />
+                                    </div>
 
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="flex h-12 w-full items-center justify-center rounded-full bg-[#a43c12] px-6 text-[14px] font-semibold text-white shadow-[0_18px_36px_rgba(164,60,18,0.22)] transition hover:bg-[#8f3510] disabled:cursor-not-allowed disabled:opacity-70"
-                                >
-                                    {loading ? 'Memproses...' : 'Daftar'}
-                                </button>
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="flex h-12 w-full items-center justify-center rounded-full bg-[#a43c12] px-6 text-[14px] font-semibold text-white shadow-[0_18px_36px_rgba(164,60,18,0.22)] transition hover:bg-[#8f3510] disabled:cursor-not-allowed disabled:opacity-70"
+                                    >
+                                        {loading ? 'Memproses...' : 'Daftar'}
+                                    </button>
 
-                                <p className="text-sm text-slate-500">
-                                    Sudah punya akun?{' '}
-                                    <Link to="/login" className="font-medium text-[#a43c12] transition-colors hover:text-[#8f3510]">
-                                        Masuk di sini
-                                    </Link>
-                                </p>
-                            </form>
+                                    <p className="text-sm text-slate-500">
+                                        Sudah punya akun?{' '}
+                                        <Link to="/login" className="font-medium text-[#a43c12] transition-colors hover:text-[#8f3510]">
+                                            Masuk di sini
+                                        </Link>
+                                    </p>
+                                </form>
+                            ) : (
+                                <form onSubmit={handleVerify} className="space-y-6 pt-1">
+                                    <div onPaste={handleOtpPaste} className="flex gap-3">
+                                        {otp.map((digit, i) => (
+                                            <input
+                                                key={i}
+                                                ref={(el) => (inputRefs.current[i] = el)}
+                                                type="text"
+                                                inputMode="numeric"
+                                                maxLength={1}
+                                                value={digit}
+                                                onChange={(e) => handleOtpChange(i, e.target.value)}
+                                                onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                                                className="h-14 w-full rounded-2xl border border-slate-200 bg-white text-center text-xl font-bold text-slate-900 shadow-[0_4px_12px_rgba(15,23,42,0.06)] outline-none transition focus:border-[#a43c12] focus:ring-2 focus:ring-[#a43c12]/20"
+                                            />
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={loading || otp.join('').length < 6}
+                                        className="flex h-12 w-full items-center justify-center rounded-full bg-[#a43c12] px-6 text-[14px] font-semibold text-white shadow-[0_18px_36px_rgba(164,60,18,0.22)] transition hover:bg-[#8f3510] disabled:cursor-not-allowed disabled:opacity-70"
+                                    >
+                                        {loading ? 'Memverifikasi...' : 'Verifikasi & Buat Akun'}
+                                    </button>
+
+                                    <div className="flex items-center justify-between text-sm">
+                                        <button
+                                            type="button"
+                                            onClick={() => setStep('register')}
+                                            className="text-slate-500 transition hover:text-slate-700"
+                                        >
+                                            ← Ganti email
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleResend}
+                                            disabled={countdown > 0 || loading}
+                                            className="font-medium text-[#a43c12] transition hover:text-[#8f3510] disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                            {countdown > 0 ? `Kirim ulang (${countdown}s)` : 'Kirim ulang OTP'}
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </section>

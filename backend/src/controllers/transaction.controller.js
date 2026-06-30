@@ -14,9 +14,6 @@ const getTransactions = async (req, res, next) => {
 const createTransaction = async (req, res, next) => {
     try {
         const { memberId, totalAmount } = req.body;
-        if (!memberId || !totalAmount) {
-            return res.status(400).json({ success: false, message: 'memberId dan totalAmount wajib diisi' });
-        }
         const trx = await transactionService.createTransaction({ memberId, totalAmount }, req.user.id);
         return successResponse(res, trx, 'Transaksi berhasil dibuat', 201);
     } catch (err) {

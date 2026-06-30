@@ -40,11 +40,41 @@ export const useAuth = () => {
         }
     }, []);
 
+    const verifyOtp = useCallback(async ({ email, otp }) => {
+        setLoading(true);
+        setError(null);
+        try {
+            await authApi.verifyOtp({ email, otp });
+            return { success: true };
+        } catch (err) {
+            const msg = err.response?.data?.message || 'Verifikasi OTP gagal';
+            setError(msg);
+            return { success: false, error: msg };
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const resendOtp = useCallback(async ({ email }) => {
+        setLoading(true);
+        setError(null);
+        try {
+            await authApi.resendOtp({ email });
+            return { success: true };
+        } catch (err) {
+            const msg = err.response?.data?.message || 'Gagal mengirim ulang OTP';
+            setError(msg);
+            return { success: false, error: msg };
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     const logout = useCallback(async () => {
         try { await authApi.logout(); } catch (_) { }
         authStore.clear();
         setUser(null);
     }, []);
 
-    return { user, loading, error, login, register, logout, isAuthenticated: !!user };
+    return { user, loading, error, login, register, verifyOtp, resendOtp, logout, isAuthenticated: !!user };
 };

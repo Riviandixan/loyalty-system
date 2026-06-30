@@ -98,6 +98,18 @@ model Redeem {
   @@map("redeems")
 }
 
+model OtpVerification {
+  id        Int      @id @default(autoincrement())
+  email     String
+  fullName  String   @map("full_name")
+  password  String
+  otp       String
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otp_verifications")
+}
+
 model AuditLog {
   id        Int      @id @default(autoincrement())
   userId    Int?     @map("user_id")

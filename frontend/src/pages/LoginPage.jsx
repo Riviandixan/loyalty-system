@@ -7,6 +7,7 @@ import screenImage from '../assets/screen.png';
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [localError, setLocalError] = useState('');
     const { login, loading, error } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,9 +21,15 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLocalError('');
+        if (!email.trim()) return setLocalError('Email wajib diisi');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setLocalError('Format email tidak valid');
+        if (!password) return setLocalError('Password wajib diisi');
         const result = await login(email, password);
         if (result.success) navigate('/dashboard');
     };
+
+    const displayError = localError || error;
 
     return (
         <div className="min-h-screen bg-[#fff8f6] text-slate-900 lg:h-screen lg:overflow-hidden">
@@ -125,10 +132,10 @@ export default function LoginPage() {
                                 </div>
                             )}
 
-                            {error && (
+                            {displayError && (
                                 <div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                     <MaterialIcon name="error" className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
-                                    <span>{error}</span>
+                                    <span>{displayError}</span>
                                 </div>
                             )}
 
@@ -136,12 +143,11 @@ export default function LoginPage() {
                                 <div>
                                     <label className="mb-2 block text-[14px] font-medium text-slate-700">Email Anda</label>
                                     <input
-                                        type="email"
+                                        type="text"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => { setEmail(e.target.value); setLocalError(''); }}
                                         className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
                                         placeholder="Masukkan email Anda"
-                                        required
                                     />
                                 </div>
 
@@ -150,10 +156,9 @@ export default function LoginPage() {
                                     <input
                                         type="password"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => { setPassword(e.target.value); setLocalError(''); }}
                                         className="input-field h-12 rounded-2xl bg-white px-5 text-[14px] shadow-[0_10px_30px_rgba(15,23,42,0.03)]"
                                         placeholder="••••••••"
-                                        required
                                     />
                                 </div>
 

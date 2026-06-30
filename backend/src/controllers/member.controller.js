@@ -41,9 +41,6 @@ const updateMember = async (req, res, next) => {
 const updateMemberStatus = async (req, res, next) => {
     try {
         const { status } = req.body;
-        if (!['ACTIVE', 'INACTIVE'].includes(status)) {
-            return res.status(400).json({ success: false, message: 'Status tidak valid' });
-        }
         const member = await memberService.updateMemberStatus(req.params.id, status, req.user.id);
         return successResponse(res, member, 'Status member diperbarui');
     } catch (err) {

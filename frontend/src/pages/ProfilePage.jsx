@@ -281,7 +281,7 @@ export default function ProfilePage() {
                         <div>
                             <label className="block text-xs font-medium text-slate-700 mb-1.5">
                                 Password Saat Ini <span className="text-red-500">*</span>
-                            </label>
+                            </label>  
                             <div className="relative">
                                 <input
                                     type={showPasswords.current ? 'text' : 'password'}
